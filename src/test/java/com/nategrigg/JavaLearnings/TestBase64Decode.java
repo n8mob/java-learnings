@@ -3,10 +3,11 @@ package com.nategrigg.JavaLearnings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class TestBase64Decode {
 
@@ -38,17 +39,15 @@ public class TestBase64Decode {
 
   @Test
   void testOneWithSpace() {
-    String encoded = "QQ== ";
-    String decoded = new String(d64.decode(encoded));
-
-    assertThat(decoded).isEqualTo("A");
+    var encoded = "QQ== ".getBytes(StandardCharsets.UTF_8);
+		assertThatExceptionOfType(IllegalArgumentException.class)
+				.isThrownBy(() -> d64.decode(encoded));
   }
 
   @Test
   void testOneWithComma() {
-    String encoded = "QQ==,";
-    String decoded = new String(d64.decode(encoded));
-
-    assertThat(decoded).isEqualTo("A");
+    var encoded = "QQ==,".getBytes();
+		assertThatExceptionOfType(IllegalArgumentException.class)
+				.isThrownBy(() -> d64.decode(encoded));
   }
 }
